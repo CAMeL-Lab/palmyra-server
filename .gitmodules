@@ -1,0 +1,3 @@
+[submodule "camel_parser"]
+	path = camel_parser
+	url = https://github.com/CAMeL-Lab/camel_parser

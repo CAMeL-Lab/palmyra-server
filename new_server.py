@@ -3,6 +3,7 @@
 import os
 import flask
 import requests
+from flask import request
 
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -146,6 +147,14 @@ def clear_credentials():
   return ('Credentials have been cleared.<br><br>' +
           print_index_table())
 
+@app.route('/parse_data', method=['GET'])
+def parse_data():
+  print(request)
+  import pdb; pdb.set_trace()
+
+@app.route('/get_parsed_data', method=['POST'])
+def get_parsed_data():
+  pass
 
 def credentials_to_dict(credentials):
   return {'token': credentials.token,
