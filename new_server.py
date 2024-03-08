@@ -1,15 +1,33 @@
 # -*- coding: utf-8 -*-
 
+import datetime
 import os
+import random
+from camel_parser.src.conll_output import print_to_conll, text_tuples_to_string
+from camel_parser.src.data_preparation import get_file_type_params, parse_text
 import flask
 import requests
 from flask import request
+from pandas import read_csv
+from camel_tools.utils.charmap import CharMapper
 
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 
 from flask_cors import CORS, cross_origin
+import sys
+sys.path.insert(0,'camel_parser/src')
+
+# camel_tools import used to clean text
+arclean = CharMapper.builtin_mapper("arclean")
+
+#
+### Get clitic features
+#
+clitic_feats_df = read_csv('camel_parser/data/clitic_feats.csv')
+clitic_feats_df = clitic_feats_df.astype(str).astype(object) # so ints read are treated as string objects
+
 
 
 # This variable specifies the name of a file that contains the OAuth 2.0
@@ -147,14 +165,37 @@ def clear_credentials():
   return ('Credentials have been cleared.<br><br>' +
           print_index_table())
 
-@app.route('/parse_data', method=['GET'])
+@app.route('/parse_data', methods=['GET'])
 def parse_data():
-  print(request)
-  import pdb; pdb.set_trace()
+  lines = request.get_json()['sentences']
+  file_type = 'text'
+  
+  file_type_params = get_file_type_params(lines, file_type, '', 'models/CAMeLBERT-CATiB-biaffine.model',
+      arclean, 'bert', clitic_feats_df, 'catib6', 'r13')
+  parsed_text_tuples = parse_text(file_type, file_type_params)
 
-@app.route('/get_parsed_data', method=['POST'])
+  string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
+  parsed_data = '\n'.join(string_lines)
+
+  new_id = str(int(random.random()*100000)) + datetime.datetime.now().strftime('%s')
+  
+  with open(f'data/temp_parsed/{new_id}', 'w') as f:
+    f.write(parsed_data)
+
+  return new_id
+
+
+@app.route('/get_parsed_data', methods=['POST'])
 def get_parsed_data():
-  pass
+  data_id = request.get_json()['data_id']
+  conll_file_path = f'data/temp_parsed/{data_id}'
+  
+  data = []
+  with open(conll_file_path, 'r') as f:
+    data = f.readlines()
+  os.remove(conll_file_path)
+  
+  return ''.join(data)
 
 def credentials_to_dict(credentials):
   return {'token': credentials.token,
