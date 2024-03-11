@@ -165,7 +165,7 @@ def clear_credentials():
   return ('Credentials have been cleared.<br><br>' +
           print_index_table())
 
-@app.route('/parse_data', methods=['GET'])
+@app.route('/parse_data', methods=['POST'])
 def parse_data():
   lines = request.get_json()['sentences']
   file_type = 'text'
@@ -185,7 +185,7 @@ def parse_data():
   return new_id
 
 
-@app.route('/get_parsed_data', methods=['POST'])
+@app.route('/get_parsed_data', methods=['GET'])
 def get_parsed_data():
   data_id = request.get_json()['data_id']
   conll_file_path = f'data/temp_parsed/{data_id}'
