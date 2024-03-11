@@ -3,8 +3,8 @@
 import datetime
 import os
 import random
-from .camel_parser.src.conll_output import print_to_conll, text_tuples_to_string
-from .camel_parser.src.data_preparation import get_file_type_params, parse_text
+from camel_parser.src.conll_output import print_to_conll, text_tuples_to_string
+from camel_parser.src.data_preparation import get_file_type_params, parse_text
 import flask
 import requests
 from flask import request
