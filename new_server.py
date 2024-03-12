@@ -172,7 +172,7 @@ def parse_data():
   lines = request.get_json()['sentences']
   file_type = 'text'
   
-  file_type_params = get_file_type_params(lines, file_type, '', 'models/CAMeLBERT-CATiB-biaffine.model',
+  file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/CAMeLBERT-CATiB-biaffine.model',
       arclean, 'bert', clitic_feats_df, 'catib6', 'r13')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
