@@ -19,13 +19,15 @@ from flask_cors import CORS, cross_origin
 import sys
 sys.path.insert(0,'camel_parser/src')
 
+project_dir = os.path.expanduser('~/palmyra_server/palmyra_server')
+
 # camel_tools import used to clean text
 arclean = CharMapper.builtin_mapper("arclean")
 
 #
 ### Get clitic features
 #
-clitic_feats_df = read_csv('camel_parser/data/clitic_feats.csv')
+clitic_feats_df = read_csv(f'{project_dir}/camel_parser/data/clitic_feats.csv')
 clitic_feats_df = clitic_feats_df.astype(str).astype(object) # so ints read are treated as string objects
 
 
