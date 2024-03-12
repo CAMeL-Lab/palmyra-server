@@ -181,7 +181,7 @@ def parse_data():
 
   new_id = str(int(random.random()*100000)) + datetime.datetime.now().strftime('%s')
   
-  with open(f'data/temp_parsed/{new_id}', 'w') as f:
+  with open(f'{project_dir}/data/temp_parsed/{new_id}', 'w') as f:
     f.write(parsed_data)
 
   return new_id
@@ -190,7 +190,7 @@ def parse_data():
 @app.route('/get_parsed_data', methods=['GET'])
 def get_parsed_data():
   data_id = request.get_json()['data_id']
-  conll_file_path = f'data/temp_parsed/{data_id}'
+  conll_file_path = f'{project_dir}/data/temp_parsed/{data_id}'
   
   data = []
   with open(conll_file_path, 'r') as f:
