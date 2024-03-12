@@ -25,7 +25,7 @@ arclean = CharMapper.builtin_mapper("arclean")
 #
 ### Get clitic features
 #
-clitic_feats_df = read_csv('camel_parser/data/clitic_feats.csv')
+clitic_feats_df = read_csv('./camel_parser/data/clitic_feats.csv')
 clitic_feats_df = clitic_feats_df.astype(str).astype(object) # so ints read are treated as string objects
 
 
