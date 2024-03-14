@@ -189,7 +189,7 @@ def parse_data():
 
 @app.route('/get_parsed_data', methods=['GET'])
 def get_parsed_data():
-  data_id = request.get_json()['data_id']
+  data_id = request.args.get("data_id")
   conll_file_path = f'{project_dir}/data/temp_parsed/{data_id}'
   
   data = []
