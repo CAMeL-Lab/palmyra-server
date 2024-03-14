@@ -173,7 +173,7 @@ def parse_data():
   file_type = 'text'
   
   file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/CAMeLBERT-CATiB-biaffine.model',
-      arclean, 'bert', clitic_feats_df, 'catib6', 'r13')
+      arclean, 'bert', clitic_feats_df, 'catib6', 'calima-msa-s31')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
   string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
