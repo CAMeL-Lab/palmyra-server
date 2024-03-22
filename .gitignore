@@ -165,3 +165,4 @@ logs.txt
 /data/**
 !/data/temp_parsed
 /data/temp_parsed/**
+client_secret.json
