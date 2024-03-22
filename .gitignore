@@ -162,3 +162,6 @@ cython_debug/
 .DS_Store
 models/
 logs.txt
+/data/**
+!/data/temp_parsed
+/data/temp_parsed/**
