@@ -199,6 +199,20 @@ def get_parsed_data():
   
   return ''.join(data)
 
+@app.route('/get_gapi_credentials', methods=['GET'])
+def get_gapi_credentials():
+  return {
+    'apiKey': os.getenv('GCP_API_KEY'),
+    'discovertDocs': [os.getenv('GCP_DISCOVERY_DOC')]
+  }
+
+@app.route('/get_gis_credentials', methods=['GET'])
+def get_gis_credentials():
+  return {
+    'client_id': os.getenv('GCP_CLIENT_ID,'),
+    'scope': SCOPES
+  }
+
 def credentials_to_dict(credentials):
   return {'token': credentials.token,
           'refresh_token': credentials.refresh_token,
