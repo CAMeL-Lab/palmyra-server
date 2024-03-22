@@ -209,7 +209,7 @@ def get_gapi_credentials():
 @app.route('/get_gis_credentials', methods=['GET'])
 def get_gis_credentials():
   return {
-    'client_id': os.getenv('client_id'),
+    'client_id': os.getenv('GCP_CLIENT_ID'),
     'scope': SCOPES
   }
 
