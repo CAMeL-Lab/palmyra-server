@@ -19,7 +19,13 @@ from flask_cors import CORS, cross_origin
 import sys
 sys.path.insert(0,'camel_parser/src')
 
+from dotenv import load_dotenv
+load_dotenv('.env')
+
+
 project_dir = os.path.expanduser('~/palmyra_server/palmyra_server')
+# for local dev
+# project_dir = os.path.expanduser('.')
 
 # camel_tools import used to clean text
 arclean = CharMapper.builtin_mapper("arclean")
@@ -244,6 +250,7 @@ def print_index_table():
 
 
 if __name__ == '__main__':
+  project_dir = os.path.expanduser('.')
   # When running locally, disable OAuthlib's HTTPs verification.
   # ACTION ITEM for developers:
   #     When running in production *do not* leave this option enabled.
