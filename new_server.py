@@ -176,9 +176,18 @@ def clear_credentials():
 @app.route('/parse_data', methods=['POST'])
 def parse_data():
   lines = request.get_json()['sentences']
+  parser_type = request.get_json()['parserType']
   file_type = 'text'
   
-  file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/CAMeLBERT-CATiB-biaffine.model',
+  if parser_type == "ar_catib":
+    parser_model_name = "CAMeLBERT-CATiB-biaffine.model"
+  elif parser_type == "ar_ud":
+    parser_model_name = "CAMeLBERT-UD-biaffine.model"
+  else:
+    # just in case user messes with html
+    return
+  
+  file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/{parser_model_name}',
       arclean, 'bert', clitic_feats_df, 'catib6', 'calima-msa-s31')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
