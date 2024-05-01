@@ -3,19 +3,17 @@
 import datetime
 import os
 import random
-from camel_parser.src.conll_output import print_to_conll, text_tuples_to_string
-from camel_parser.src.data_preparation import get_file_type_params, parse_text
+
+from parse_limit import get_lines_to_parse
+from .camel_parser.src.conll_output import text_tuples_to_string
+from .camel_parser.src.data_preparation import get_file_type_params, parse_text
 import flask
-import requests
 from flask import request
 from pandas import read_csv
 from camel_tools.utils.charmap import CharMapper
 
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-import googleapiclient.discovery
 
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import sys
 sys.path.insert(0,'camel_parser/src')
 
@@ -45,9 +43,11 @@ CLIENT_SECRETS_FILE = f"{os.path.expanduser(project_dir)}/client_secret.json"
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
 # os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly', 'https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/drive.file']
+SCOPES = ['https://www.googleapis.com/auth/drive.file']
 API_SERVICE_NAME = 'drive'
 API_VERSION = 'v2'
+
+PARSE_WORD_LIMIT = 100
 
 app = flask.Flask(__name__)
 # Note: A secret key is included in the sample so that it works.
@@ -63,7 +63,7 @@ CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/parse_data', methods=['POST'])
 def parse_data():
-  lines = request.get_json()['sentences']
+  all_lines = request.get_json()['sentences']
   parser_type = request.get_json()['parserType']
   file_type = 'text'
   
@@ -75,12 +75,19 @@ def parse_data():
     # just in case user messes with html
     return
   
+  # will parse lines for a total of 100 words
+  lines, lines_to_ignore = get_lines_to_parse(lines, PARSE_WORD_LIMIT)
+  
   file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/{parser_model_name}',
       arclean, 'bert', clitic_feats_df, 'catib6', 'calima-msa-s31')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
   string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
-  parsed_data = '\n'.join(string_lines)
+  
+  # add parsed lines to unparsed lines
+  final_data = string_lines + lines_to_ignore
+  
+  parsed_data = '\n'.join(final_data)
 
   new_id = str(int(random.random()*100000)) + datetime.datetime.now().strftime('%s')
   
