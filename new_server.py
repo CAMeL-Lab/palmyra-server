@@ -45,7 +45,7 @@ CLIENT_SECRETS_FILE = f"{os.path.expanduser(project_dir)}/client_secret.json"
 # os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 API_SERVICE_NAME = 'drive'
-API_VERSION = 'v2'
+API_VERSION = 'v3'
 
 PARSE_WORD_LIMIT = 100
 
