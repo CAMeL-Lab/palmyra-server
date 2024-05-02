@@ -5,8 +5,8 @@ import os
 import random
 
 from parse_limit import get_lines_to_parse
-from .camel_parser.src.conll_output import text_tuples_to_string
-from .camel_parser.src.data_preparation import get_file_type_params, parse_text
+from camel_parser.src.conll_output import text_tuples_to_string
+from camel_parser.src.data_preparation import get_file_type_params, parse_text
 import flask
 from flask import request
 from pandas import read_csv
