@@ -61,8 +61,6 @@ app.secret_key = os.getenv('FLASK_SECRET')
 cors = CORS(app, supports_credentials=True)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-disambiguator = get_disambiguator("bert", "calima-msa-s31")
-
 @app.route('/parse_data', methods=['POST'])
 def parse_data():
   all_lines = request.get_json()['sentences']
@@ -78,6 +76,8 @@ def parse_data():
   else:
     # just in case user messes with html
     return
+  
+  disambiguator = get_disambiguator("bert", "calima-msa-s31")
   
   # will parse lines for a total of 100 words
   lines, lines_to_ignore = get_lines_to_parse(all_lines, PARSE_WORD_LIMIT)
