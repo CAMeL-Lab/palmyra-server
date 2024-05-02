@@ -76,7 +76,7 @@ def parse_data():
     return
   
   # will parse lines for a total of 100 words
-  lines, lines_to_ignore = get_lines_to_parse(lines, PARSE_WORD_LIMIT)
+  lines, lines_to_ignore = get_lines_to_parse(all_lines, PARSE_WORD_LIMIT)
   
   file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/{parser_model_name}',
       arclean, 'bert', clitic_feats_df, 'catib6', 'calima-msa-s31')
