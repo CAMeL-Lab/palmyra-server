@@ -69,8 +69,10 @@ def parse_data():
   
   if parser_type == "ar_catib":
     parser_model_name = "CAMeLBERT-CATiB-biaffine.model"
+    tagset = "catib6"
   elif parser_type == "ar_ud":
     parser_model_name = "CAMeLBERT-UD-biaffine.model"
+    tagset = "ud"
   else:
     # just in case user messes with html
     return
@@ -79,7 +81,7 @@ def parse_data():
   lines, lines_to_ignore = get_lines_to_parse(all_lines, PARSE_WORD_LIMIT)
   
   file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/{parser_model_name}',
-      arclean, 'bert', clitic_feats_df, 'catib6', 'calima-msa-s31')
+      arclean, 'bert', clitic_feats_df, tagset, 'calima-msa-s31')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
   string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
