@@ -3,6 +3,7 @@
 import datetime
 import os
 import random
+from camel_parser.src.initialize_disambiguator.disambiguator_interface import get_disambiguator
 from parse_limit import get_lines_to_parse, unparsed_lines_to_conll
 from camel_parser.src.conll_output import text_tuples_to_string
 from camel_parser.src.data_preparation import get_file_type_params, parse_text
@@ -60,6 +61,8 @@ app.secret_key = os.getenv('FLASK_SECRET')
 cors = CORS(app, supports_credentials=True)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
+disambiguator = get_disambiguator("bert", "calima-msa-s31")
+
 @app.route('/parse_data', methods=['POST'])
 def parse_data():
   all_lines = request.get_json()['sentences']
@@ -80,7 +83,7 @@ def parse_data():
   lines, lines_to_ignore = get_lines_to_parse(all_lines, PARSE_WORD_LIMIT)
   
   file_type_params = get_file_type_params(lines, file_type, '', f'{project_dir}/camel_parser/models/{parser_model_name}',
-      arclean, 'bert', clitic_feats_df, tagset, 'calima-msa-s31')
+      arclean, disambiguator, clitic_feats_df, tagset, 'calima-msa-s31')
   parsed_text_tuples = parse_text(file_type, file_type_params)
 
   string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
