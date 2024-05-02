@@ -3,8 +3,7 @@
 import datetime
 import os
 import random
-
-from parse_limit import get_lines_to_parse
+from parse_limit import get_lines_to_parse, unparsed_lines_to_conll
 from camel_parser.src.conll_output import text_tuples_to_string
 from camel_parser.src.data_preparation import get_file_type_params, parse_text
 import flask
@@ -87,9 +86,11 @@ def parse_data():
   string_lines = text_tuples_to_string(parsed_text_tuples, sentences=lines)
   
   # add parsed lines to unparsed lines
-  final_data = string_lines + lines_to_ignore
+  if lines_to_ignore:
+    lines_to_ignore = unparsed_lines_to_conll(lines_to_ignore)
+    string_lines = string_lines + lines_to_ignore
   
-  parsed_data = '\n'.join(final_data)
+  parsed_data = '\n'.join(string_lines)
 
   new_id = str(int(random.random()*100000)) + datetime.datetime.now().strftime('%s')
   
