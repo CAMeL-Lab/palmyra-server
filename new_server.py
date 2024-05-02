@@ -92,7 +92,7 @@ def parse_data():
   
   parsed_data = '\n'.join(string_lines)
 
-  new_id = str(int(random.random()*100000)) + datetime.datetime.now().strftime('%s')
+  new_id = datetime.datetime.now().strftime('%s') + str(int(random.random()*100000))
   
   with open(f'{project_dir}/data/temp_parsed/{new_id}', 'w') as f:
     f.write(parsed_data)
