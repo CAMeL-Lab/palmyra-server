@@ -18,7 +18,7 @@ def unparsed_lines_to_conll(lines):
         lines_to_print.extend((f"# text = {line}", f"# treeTokens = {line}"))
         words = line.split()
         lines_to_print.extend(
-            f"{i + 1}\t{words[i]}\t_\t_\t_\t_\t_\t_\t_\t_"
+            f"{i + 1}\t{words[i]}\t_\t_\t_\t_\t0\t---\t_\t_"
             for i in range(len(words))
         )
     return lines_to_print
